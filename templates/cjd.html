@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block page_content %}
+<table border="1">
+<tr>
+    <td>{{ id }}</td>
+    <td>{{ xm }}</td>
+    <td colspan="3">学生成绩单</td>
+</tr>
+<tr>
+    <th>课程号</th>
+    <th>课程名</th>
+    <th>成绩</th>
+    <th>学分</th>
+    <th>教师</th>
+</tr>
+{% for line in cj %}
+<tr>
+{% for i in line %}
+    <td>{{ i }}</td>
+{% endfor %}
+</tr>
+{% endfor %}
+</table>
+    <div>平均成绩：{{ average }}</div>
+{% endblock %}

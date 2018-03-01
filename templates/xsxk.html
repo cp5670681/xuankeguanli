@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block page_content %}
+    <div class="row">
+        <div class="col-md-6">
+            <table border="1">
+                <caption>学生详细信息</caption>
+                <tr>
+                    <th>学号</th>
+                    <th>姓名</th>
+                    <th>年龄</th>
+                    <th>性别</th>
+                    <th>所在院系</th>
+                <tr>
+                    {% for i in xxxx %}
+                        <td>{{ i }}</td>
+                    {% endfor %}
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <table border="1">
+                <caption>可选课程</caption>
+                <tr>
+                    <th>课程号</th>
+                    <th>课程名</th>
+                    <th>教师名</th>
+                </tr>
+                {% for line in kxkc %}
+                    <tr>
+                        {% for i in line %}
+                            <td>{{ i }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="clearfix visible-"></div>
+        <div class="col-md-6">
+            <table border="1">
+                <caption>已修课程成绩</caption>
+                <tr>
+                    <th>课程号</th>
+                    <th>课程名</th>
+                    <th>成绩</th>
+                </tr>
+                {% for line in yxkccj %}
+                    <tr>
+                        {% for i in line %}
+                            <td>{{ i }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col-md-6">
+            <table border="1">
+                <caption>已选课程</caption>
+                <tr>
+                    <th>课程号</th>
+                    <th>课程名</th>
+                    <th>学分</th>
+                    <th>开课系</th>
+                    <th>任课教师</th>
+                </tr>
+                {% for line in yxkc %}
+                    <tr>
+                        {% for i in line %}
+                            <td>{{ i }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}
