@@ -5,8 +5,8 @@
         <tr>
             <th>学号</th>
             <th>姓名</th>
-            <th>年龄</th>
             <th>性别</th>
+            <th>年龄</th>
             <th>所在院系</th>
             <th>用户名</th>
             <th>密码</th>
@@ -19,4 +19,20 @@
             </tr>
         {% endfor %}
     </table>
+    <form class="form-inline" method="post" action="{{ url_for('add_student') }}">
+    <input class="form-control" required="required" name="sno" placeholder="学号">
+    <input class="form-control" required="required" name="sname" placeholder="姓名">
+        <input class="form-control" required="required" name="sex" placeholder="性别">
+        <input class="form-control" required="required" name="age" placeholder="年龄">
+        <input class="form-control" required="required" name="sdept" placeholder="院系">
+        <input class="form-control" required="required" name="logn" placeholder="用户名">
+        <input class="form-control" required="required" name="pswd" placeholder="密码">
+    <button type="submit" class="btn btn-default">增加用户</button>
+        </form>
+
+    <form class="form-inline" method="post" action={{ url_for('del_student') }}>
+        <input class="form-control" required="required" name="id" placeholder="学号">
+        <button type="submit" class="btn btn-default">删除用户</button>
+    </form>
+
 {% endblock %}
