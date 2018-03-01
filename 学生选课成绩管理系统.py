@@ -1,8 +1,11 @@
-from flask import Flask, request, render_template, redirect, url_for
+import os
+from flask import Flask, request, render_template, redirect, url_for, flash
 from flask.ext.bootstrap import Bootstrap
 import sqlite3
 
 app = Flask(__name__)
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config [ 'SECRET_KEY' ] = os.urandom(24)
 bootstrap=Bootstrap(app)
 
 @app.route('/',methods=['GET','POST'])
@@ -48,6 +51,9 @@ def cjd(sno):
     num=len(cj)
     cur.execute('select sname from s where sno="%s"' % sno)
     xm=cur.fetchall()[0][0]
+    cur.close()
+    cxn.commit()
+    cxn.close()
     average = 0
     for i in cj:
         average=average+i[2]
@@ -56,6 +62,51 @@ def cjd(sno):
     else:
         average=0
     return render_template('cjd.html', cj=cj, xm=xm, average=average,id=sno)
+
+@app.route('/xk',methods=['POST'])
+def xk_p():
+    cxn = sqlite3.connect(r'C:\ke\数据库\学生选课成绩管理系统\student.db')
+    cur = cxn.cursor()
+    id=request.form.get('id')
+    cno=request.form.get('xkcno')
+    cur.execute('select cno from c where cno in (select cno from c except select c.cno from sc,c where sno="%s" and sc.cno=c.cno)' % id)
+    kxkc = cur.fetchall()
+    kxkc2=list()
+    for i in kxkc:
+        kxkc2.append(i[0])
+    if cno not in kxkc2:
+        flash('该课程不可选，选课失败')
+        return redirect(url_for('xk', sno=id))
+    else:
+        cur.execute('insert into sc values("%s","%s",null)'%(id,cno))
+        cur.close()
+        cxn.commit()
+        cxn.close()
+        flash('选课成功')
+        return redirect(url_for('xk',sno=id))
+
+@app.route('/tk',methods=['POST'])
+def tk_p():
+    cxn = sqlite3.connect(r'C:\ke\数据库\学生选课成绩管理系统\student.db')
+    cur = cxn.cursor()
+    id=request.form.get('id')
+    cno=request.form.get('tkcno')
+    cur.execute('select cno from sc where sno="%s" and grade is null'% id)
+    tkkc = cur.fetchall()
+    tkkc2=list()
+    for i in tkkc:
+        tkkc2.append(i[0])
+    if cno not in tkkc2:
+        flash('该课程不可退，退课失败')
+        return redirect(url_for('xk', sno=id))
+    else:
+        cur.execute('delete from sc where sno="%s" and cno="%s" and grade is null'%(id,cno))
+        cur.close()
+        cxn.commit()
+        cxn.close()
+        flash('退课成功')
+        return redirect(url_for('xk',sno=id))
+
 
 
 
