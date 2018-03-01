@@ -28,7 +28,8 @@ def index():
         if len(true_pswd) == 1 and pswd == true_pswd[0][0]:
             return redirect(url_for('xk', sno=logn))
         else:
-            return ('用户名或密码错误')
+            flash('用户名或密码错误')
+            return redirect(url_for('index'))
 
 
 @app.route('/xk/<sno>')
@@ -54,7 +55,7 @@ def xk(sno):
 def cjd(sno):
     cxn = sqlite3.connect(r'C:\ke\数据库\学生选课成绩管理系统\student.db')
     cur = cxn.cursor()
-    cur.execute('select c.cno,cname,grade,credit,tname from c,sc where sno="%s" and c.cno=sc.cno' % sno)
+    cur.execute('select c.cno,cname,grade,credit,tname from c,sc where sno="%s" and c.cno=sc.cno and grade is not null' % sno)
     cj = cur.fetchall()
     num = len(cj)
     cur.execute('select sname from s where sno="%s"' % sno)
@@ -138,7 +139,75 @@ def kcgl():
     cur.close()
     cxn.commit()
     cxn.close()
-    return render_template('kcxx.html',kcxx=kcxx)
+    return render_template('kcgl.html',kcxx=kcxx)
+
+@app.route('/add_student', methods=['POST'])
+def add_student():
+    cxn = sqlite3.connect(r'C:\ke\数据库\学生选课成绩管理系统\student.db')
+    cur = cxn.cursor()
+    try:
+        cur.execute('insert into s values("%(sno)s","%(sname)s","%(sex)s","%(age)s","%(sdept)s","%(logn)s","%(pswd)s")' % request.form)
+        cur.close()
+        cxn.commit()
+        cxn.close()
+        flash("添加成功")
+    except:
+        flash("添加失败")
+    return redirect(url_for('xsgl'))
+
+@app.route('/del_student', methods=['POST'])
+def del_student():
+    cxn = sqlite3.connect(r'C:\ke\数据库\学生选课成绩管理系统\student.db')
+    cur = cxn.cursor()
+    try:
+        cur.execute('delete from s where sno="%s"' % request.form.get('id'))
+        if cur.rowcount == 0:
+            flash("没有这个用户，删除失败")
+            cur.close()
+            cxn.commit()
+            cxn.close()
+            return redirect(url_for('xsgl'))
+        cur.close()
+        cxn.commit()
+        cxn.close()
+        flash("删除成功")
+    except:
+        flash("删除失败")
+    return redirect(url_for('xsgl'))
+
+@app.route('/add_class', methods=['POST'])
+def add_class():
+    cxn = sqlite3.connect(r'C:\ke\数据库\学生选课成绩管理系统\student.db')
+    cur = cxn.cursor()
+    try:
+        cur.execute('insert into c values("%(cno)s","%(cname)s","%(credit)s","%(cdept)s","%(tname)s")' % request.form)
+        cur.close()
+        cxn.commit()
+        cxn.close()
+        flash("添加成功")
+    except:
+        flash("添加失败")
+    return redirect(url_for('kcgl'))
+
+@app.route('/del_class', methods=['POST'])
+def del_class():
+    cxn = sqlite3.connect(r'C:\ke\数据库\学生选课成绩管理系统\student.db')
+    cur = cxn.cursor()
+    try:
+        cur.execute('delete from c where cno="%s"' % request.form.get('cno'))
+        if cur.rowcount == 0:
+            flash("没有这个课程，删除失败")
+            cur.close()
+            cxn.commit()
+            cxn.close()
+            return redirect(url_for('kcgl'))
+        cur.close()
+        cxn.commit()
+        cxn.close()
+        flash("删除成功")
+    except:
+        flash("删除失败")
+    return redirect(url_for('kcgl'))
 
 
 if __name__ == '__main__':
