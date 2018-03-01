@@ -5,18 +5,18 @@
             <form action="/xk" method="post">
                 <input type="hidden"  name="id" value="{{ id }}">
                 课程号: <input type="text" required="required" name="xkcno"/>
-                <input type="submit" value="选课"/>
+                <input class="btn btn-default" type="submit" value="选课"/>
             </form>
         </div>
         <div class="col-md-6">
             <form action="/tk" method="post">
                 <input type="hidden" name="id" value="{{ id }}">
                 课程号: <input type="text" required="required" name="tkcno"/>
-                <input type="submit" value="退课"/>
+                <input class="btn btn-default" type="submit" value="退课"/>
             </form>
         </div>
         <div class="col-md-6">
-            <table border="1">
+            <table class="table table-bordered">
                 <caption>学生详细信息</caption>
                 <tr>
                     <th>学号</th>
@@ -32,7 +32,7 @@
             </table>
         </div>
         <div class="col-md-6">
-            <table border="1">
+            <table class="table table-bordered">
                 <caption>可选课程</caption>
                 <tr>
                     <th>课程号</th>
@@ -50,7 +50,7 @@
         </div>
         <div class="clearfix visible-"></div>
         <div class="col-md-6">
-            <table border="1">
+            <table class="table table-bordered">
                 <caption>已修课程成绩</caption>
                 <tr>
                     <th>课程号</th>
@@ -67,7 +67,7 @@
             </table>
         </div>
         <div class="col-md-6">
-            <table border="1">
+            <table class="table table-bordered">
                 <caption>已选课程</caption>
                 <tr>
                     <th>课程号</th>

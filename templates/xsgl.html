@@ -1,0 +1,22 @@
+{% extends "base2.html" %}
+{% block page_content %}
+    <table class="table table-bordered">
+    <caption>学生详细信息</caption>
+        <tr>
+            <th>学号</th>
+            <th>姓名</th>
+            <th>年龄</th>
+            <th>性别</th>
+            <th>所在院系</th>
+            <th>用户名</th>
+            <th>密码</th>
+        </tr>
+        {% for line in xsxx %}
+            <tr>
+                {% for i in line %}
+                    <td>{{ i }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
